@@ -1,8 +1,11 @@
 package com.dicoding.picodiploma.loginwithanimation.view.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -26,6 +29,50 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        playAnimation()
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val messageText = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val emailText = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val emailEdit = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val passwordText = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val passwordEdit = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val loginButton = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+
+        AnimatorSet().apply {
+            playSequentially(title, messageText, emailText, emailEdit, passwordText, passwordEdit, loginButton)
+            start()
+        }
+
     }
 
     private fun setupView() {

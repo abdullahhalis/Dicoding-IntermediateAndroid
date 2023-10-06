@@ -1,7 +1,10 @@
 package com.dicoding.picodiploma.loginwithanimation.view.signup
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
@@ -18,6 +21,53 @@ class SignupActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        playAnimation()
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val nameText = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val nameEdit = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val emailText = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val emailEdit = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val passwordText = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val passwordEdit = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+        val signupButton = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).apply {
+            duration = 100
+            startDelay = 100
+        }
+
+        AnimatorSet().apply {
+            playSequentially(title, nameText, nameEdit, emailText, emailEdit, passwordText, passwordEdit, signupButton )
+            start()
+        }
     }
 
     private fun setupView() {
