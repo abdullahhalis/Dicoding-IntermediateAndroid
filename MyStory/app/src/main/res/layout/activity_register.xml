@@ -16,6 +16,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
+            android:contentDescription="@string/image_description"
             app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="text" />
+                android:inputType="text"
+                android:hint="@string/name"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -104,7 +106,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:hint="@string/email"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -139,7 +142,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:hint="@string/password"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -150,6 +154,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="@string/register"
             android:text="@string/register"
             android:alpha="0"
             tools:alpha="100"

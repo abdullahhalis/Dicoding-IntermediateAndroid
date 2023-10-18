@@ -28,4 +28,5 @@
 
     <string name="welcome">"welcome %s"</string>
     <string name="change_language">Change Language</string>
+    <string name="image_description">Image</string>
 </resources>

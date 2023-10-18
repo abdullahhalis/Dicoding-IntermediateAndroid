@@ -29,4 +29,5 @@
 
     <string name="welcome">"Selamat datang %s"</string>
     <string name="change_language">Ganti Bahasa</string>
+    <string name="image_description">Gambat</string>
 </resources>

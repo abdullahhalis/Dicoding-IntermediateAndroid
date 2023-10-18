@@ -82,17 +82,19 @@ class LoginActivity : AppCompatActivity() {
                             progressBar.showLoading(it)
                         }
                         loginViewModel.userLogin(email, password)
-                        loginViewModel.loginResponse.observe(this@LoginActivity) { response ->
-                            if (!response.error){
-                                val userModel = UserModel(
-                                    response.loginResult.name,
-                                    response.loginResult.token
-                                )
-                                loginViewModel.saveSession(userModel)
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
-                                finish()
+                        loginViewModel.loginResponse.observe(this@LoginActivity) {
+                            it.getContentIfNotHandled()?.let { response ->
+                                if (!response.error){
+                                    val userModel = UserModel(
+                                        response.loginResult.name,
+                                        response.loginResult.token
+                                    )
+                                    loginViewModel.saveSession(userModel)
+                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(intent)
+                                    finish()
+                                }
                             }
                         }
                         loginViewModel.responseMessage.observe(this@LoginActivity) { message ->

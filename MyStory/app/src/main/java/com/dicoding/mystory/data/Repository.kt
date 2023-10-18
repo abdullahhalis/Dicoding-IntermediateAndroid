@@ -28,8 +28,8 @@ class Repository private constructor(
     private val _registerResponse = MutableLiveData<Event<ResponseMessage>>()
     val registerResponse : LiveData<Event<ResponseMessage>> = _registerResponse
 
-    private val _loginResponse = MutableLiveData<LoginResponse>()
-    val loginResponse : LiveData<LoginResponse> = _loginResponse
+    private val _loginResponse = MutableLiveData<Event<LoginResponse>>()
+    val loginResponse : LiveData<Event<LoginResponse>> = _loginResponse
 
     private val _listStory = MutableLiveData<List<ListStoryItem>>()
     val listStory : LiveData<List<ListStoryItem>> = _listStory
@@ -61,7 +61,7 @@ class Repository private constructor(
         _isLoading.value = true
         try {
             val response = apiService.login(email, password)
-            _loginResponse.value = response
+            _loginResponse.value = Event(response)
             _responseMessage.value = Event(response.message)
             _isLoading.value = false
         } catch (e: HttpException) {
