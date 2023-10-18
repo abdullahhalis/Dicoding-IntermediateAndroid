@@ -13,7 +13,6 @@
     <string name="invalid_email">Invalid Email</string>
     <string name="invalid_password">Password cannot be less than 8 characters</string>
     <string name="field_required">This field is required</string>
-    <string name="alert_button_text">continue</string>
 
     <string name="title_story">Title</string>
     <string name="story_description">description</string>
@@ -28,4 +27,5 @@
     <string name="permission_request_denied">Permission request denied</string>
 
     <string name="welcome">"welcome %s"</string>
+    <string name="change_language">Change Language</string>
 </resources>

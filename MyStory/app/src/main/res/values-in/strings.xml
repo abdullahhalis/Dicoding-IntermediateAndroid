@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CeritaKu</string>
+    <string name="title_welcome">Selamat Datang di Ceritaku</string>
+    <string name="message_welcome">Masuk atau daftar untuk membuat akun</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email">Email</string>
+    <string name="name">Nama</string>
+    <string name="title_signup_page">Lengkapi data di bawah ini</string>
+    <string name="title_login_page">Siap untuk berbagi cerita?</string>
+    <string name="message_login_page">Masukkan data anda terlebih dahulu</string>
+    <string name="invalid_email">Email tidak valid</string>
+    <string name="invalid_password">Kata sandi tidak boleh kurang dari 8 karakter</string>
+    <string name="field_required">Kolom ini harus diisi</string>
+
+    <string name="title_story">Judul</string>
+    <string name="story_description">deskripsi</string>
+    <string name="logout">Keluar</string>
+    <string name="add_story">Tambah Story</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="fail_to_take_picture">Gagal untuk mengambil foto</string>
+    <string name="fail_to_show_camera">Gagal untuk memunculkan kamera</string>
+    <string name="permission_request_granted">Permintaan Izin diberikan</string>
+    <string name="permission_request_denied">Permintaan Izin ditolak</string>
+
+    <string name="welcome">"Selamat datang %s"</string>
+    <string name="change_language">Ganti Bahasa</string>
+</resources>

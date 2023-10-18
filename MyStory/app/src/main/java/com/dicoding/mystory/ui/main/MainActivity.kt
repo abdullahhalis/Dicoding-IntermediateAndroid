@@ -3,6 +3,7 @@ package com.dicoding.mystory.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -32,12 +33,14 @@ class MainActivity : AppCompatActivity() {
     private fun init(){
         mainViewModel.getSession().observe(this){ user ->
             if(!user.isLogin){
-                startActivity(Intent(this, WelcomeActivity::class.java))
+                val intent = Intent(this, WelcomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
                 finish()
             }
             showToast(this, String.format(getString(R.string.welcome),user.name))
             if(user.token.isNotEmpty()){
-                Log.d("token main activity", "token: ${ApiConfig.token}")
+                Log.d("token main activity", "config token: ${ApiConfig.token}")
                 ApiConfig.token = user.token
                 Log.d("token main activity", "token: ${user.token}")
                 mainViewModel.getAllStories()
@@ -64,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_logout -> {
                 mainViewModel.logout()
+            }
+            R.id.menu_language -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
             }
         }
         return super.onOptionsItemSelected(item)
