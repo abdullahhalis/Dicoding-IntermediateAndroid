@@ -29,4 +29,6 @@
     <string name="welcome">"welcome %s"</string>
     <string name="change_language">Change Language</string>
     <string name="image_description">Image</string>
+    <string name="click_to_take_picture">Click to take picture</string>
+    <string name="click_to_rotate_camera">Click to rotate camera</string>
 </resources>

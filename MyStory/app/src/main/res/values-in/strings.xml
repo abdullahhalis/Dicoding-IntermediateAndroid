@@ -18,7 +18,7 @@
     <string name="title_story">Judul</string>
     <string name="story_description">deskripsi</string>
     <string name="logout">Keluar</string>
-    <string name="add_story">Tambah Story</string>
+    <string name="add_story">Tambah Cerita</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
     <string name="upload">Unggah</string>
@@ -29,5 +29,7 @@
 
     <string name="welcome">"Selamat datang %s"</string>
     <string name="change_language">Ganti Bahasa</string>
-    <string name="image_description">Gambat</string>
+    <string name="image_description">Gambar</string>
+    <string name="click_to_take_picture">Klik untuk mengambil gambar</string>
+    <string name="click_to_rotate_camera">klik untuk memutar kamera</string>
 </resources>
