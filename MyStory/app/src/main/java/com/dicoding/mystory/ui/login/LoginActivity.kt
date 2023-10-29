@@ -11,13 +11,13 @@ import com.dicoding.mystory.R
 import com.dicoding.mystory.data.pref.UserModel
 import com.dicoding.mystory.databinding.ActivityLoginBinding
 import com.dicoding.mystory.ui.main.MainActivity
-import com.dicoding.mystory.utils.ViewModelFactory
+import com.dicoding.mystory.utils.AuthViewModelFactory
 import com.dicoding.mystory.utils.showLoading
 import com.dicoding.mystory.utils.showToast
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val loginViewModel: LoginViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private val loginViewModel: LoginViewModel by viewModels { AuthViewModelFactory.getInstance(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)

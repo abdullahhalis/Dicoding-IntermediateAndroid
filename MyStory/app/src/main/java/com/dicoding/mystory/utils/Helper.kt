@@ -11,7 +11,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
-import com.dicoding.mystory.ui.addstory.AddStoryActivity.Companion.MAXIMAL_SIZE
+import com.dicoding.mystory.ui.addStory.AddStoryActivity.Companion.MAXIMAL_SIZE
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream

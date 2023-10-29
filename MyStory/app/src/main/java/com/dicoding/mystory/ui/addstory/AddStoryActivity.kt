@@ -1,4 +1,4 @@
-package com.dicoding.mystory.ui.addstory
+package com.dicoding.mystory.ui.addStory
 
 import android.Manifest
 import android.content.Intent
@@ -18,7 +18,7 @@ import com.dicoding.mystory.ui.camera.CameraActivity
 import com.dicoding.mystory.ui.camera.CameraActivity.Companion.CAMERAX_RESULT
 import com.dicoding.mystory.ui.camera.CameraActivity.Companion.EXTRA_CAMERAX_IMAGE
 import com.dicoding.mystory.ui.main.MainActivity
-import com.dicoding.mystory.utils.ViewModelFactory
+import com.dicoding.mystory.utils.StoryViewModelFactory
 import com.dicoding.mystory.utils.reduceFileImage
 import com.dicoding.mystory.utils.showLoading
 import com.dicoding.mystory.utils.showToast
@@ -30,7 +30,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
-    private val addStoryViewModel: AddStoryViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private val addStoryViewModel: AddStoryViewModel by viewModels { StoryViewModelFactory.getInstance(this) }
 
     private var currentImageUri: Uri? = null
 

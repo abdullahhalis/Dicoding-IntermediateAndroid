@@ -4,13 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.dicoding.mystory.databinding.ActivityDetailBinding
-import com.dicoding.mystory.utils.ViewModelFactory
+import com.dicoding.mystory.utils.StoryViewModelFactory
 import com.dicoding.mystory.utils.loadImage
 import com.dicoding.mystory.utils.showLoading
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
-    private val detailViewModel: DetailViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private val detailViewModel: DetailViewModel by viewModels { StoryViewModelFactory.getInstance(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)

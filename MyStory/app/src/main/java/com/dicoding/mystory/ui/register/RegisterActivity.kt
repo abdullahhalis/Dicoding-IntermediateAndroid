@@ -8,14 +8,14 @@ import android.view.View
 import androidx.activity.viewModels
 import com.dicoding.mystory.R
 import com.dicoding.mystory.databinding.ActivityRegisterBinding
-import com.dicoding.mystory.utils.ViewModelFactory
+import com.dicoding.mystory.utils.AuthViewModelFactory
 import com.dicoding.mystory.utils.showLoading
 import com.dicoding.mystory.utils.showToast
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private val registerViewModel: RegisterViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private val registerViewModel: RegisterViewModel by viewModels { AuthViewModelFactory.getInstance(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

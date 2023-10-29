@@ -9,10 +9,10 @@ import androidx.activity.viewModels
 import com.dicoding.mystory.R
 import com.dicoding.mystory.ui.main.MainActivity
 import com.dicoding.mystory.ui.welcome.WelcomeActivity
-import com.dicoding.mystory.utils.ViewModelFactory
+import com.dicoding.mystory.utils.AuthViewModelFactory
 
 class SplashActivity : AppCompatActivity() {
-    private val splashViewModel: SplashViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private val splashViewModel: SplashViewModel by viewModels { AuthViewModelFactory.getInstance(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)

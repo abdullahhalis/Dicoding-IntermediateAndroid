@@ -11,17 +11,16 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mystory.R
 import com.dicoding.mystory.data.response.ListStoryItem
-import com.dicoding.mystory.data.retrofit.ApiConfig
 import com.dicoding.mystory.databinding.ActivityMainBinding
-import com.dicoding.mystory.ui.addstory.AddStoryActivity
+import com.dicoding.mystory.ui.addStory.AddStoryActivity
 import com.dicoding.mystory.ui.welcome.WelcomeActivity
-import com.dicoding.mystory.utils.ViewModelFactory
+import com.dicoding.mystory.utils.StoryViewModelFactory
 import com.dicoding.mystory.utils.showLoading
 import com.dicoding.mystory.utils.showToast
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val mainViewModel: MainViewModel by viewModels { ViewModelFactory.getInstance(this) }
+    private val mainViewModel: MainViewModel by viewModels { StoryViewModelFactory.getInstance(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -40,8 +39,6 @@ class MainActivity : AppCompatActivity() {
             }
             showToast(this, String.format(getString(R.string.welcome),user.name))
             if(user.token.isNotEmpty()){
-                Log.d("token main activity", "config token: ${ApiConfig.token}")
-                ApiConfig.token = user.token
                 Log.d("token main activity", "token: ${user.token}")
                 mainViewModel.getAllStories()
             }
