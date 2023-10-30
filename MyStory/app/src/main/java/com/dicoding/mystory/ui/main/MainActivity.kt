@@ -13,6 +13,7 @@ import com.dicoding.mystory.R
 import com.dicoding.mystory.data.response.ListStoryItem
 import com.dicoding.mystory.databinding.ActivityMainBinding
 import com.dicoding.mystory.ui.addStory.AddStoryActivity
+import com.dicoding.mystory.ui.map.MapsActivity
 import com.dicoding.mystory.ui.welcome.WelcomeActivity
 import com.dicoding.mystory.utils.StoryViewModelFactory
 import com.dicoding.mystory.utils.showLoading
@@ -67,6 +68,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_language -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+            }
+            R.id.menu_map -> {
+                startActivity(Intent(this, MapsActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)

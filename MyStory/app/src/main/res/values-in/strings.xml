@@ -32,4 +32,6 @@
     <string name="image_description">Gambar</string>
     <string name="click_to_take_picture">Klik untuk mengambil gambar</string>
     <string name="click_to_rotate_camera">klik untuk memutar kamera</string>
+
+    <string name="maps">Maps</string>
 </resources>

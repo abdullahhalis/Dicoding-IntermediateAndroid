@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_language"
         app:showAsAction="ifRoom|withText"/>
     <item
+        android:id="@+id/menu_map"
+        android:title="@string/maps"
+        android:icon="@drawable/ic_map"
+        app:showAsAction="ifRoom|withText"/>
+    <item
         android:id="@+id/menu_logout"
         android:title="@string/logout"
         app:showAsAction="ifRoom|withText"

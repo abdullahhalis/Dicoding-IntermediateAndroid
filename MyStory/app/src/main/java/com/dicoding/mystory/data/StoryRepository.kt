@@ -26,6 +26,9 @@ class StoryRepository private constructor(
     private val _listStory = MutableLiveData<List<ListStoryItem>>()
     val listStory : LiveData<List<ListStoryItem>> = _listStory
 
+    private val _listStoryWithLocation = MutableLiveData<List<ListStoryItem>>()
+    val listStoryWithLocation : LiveData<List<ListStoryItem>> = _listStoryWithLocation
+
     private val _detailStory = MutableLiveData<Story>()
     val detailStory: LiveData<Story> = _detailStory
 
@@ -51,6 +54,18 @@ class StoryRepository private constructor(
             _isLoading.value = false
         } catch (e: HttpException){
             Log.e("list story", "onFailure: ${e.message}")
+            _isLoading.value = false
+        }
+    }
+
+    suspend fun getAllStoriesWithLocation() {
+        _isLoading.value = true
+        try {
+            val response = apiService.getStoriesWithLocation()
+            _listStoryWithLocation.value = response.listStory
+            _isLoading.value = false
+        } catch (e: HttpException) {
+            Log.e("List story with location", "onFailure: ${e.message}")
             _isLoading.value = false
         }
     }
