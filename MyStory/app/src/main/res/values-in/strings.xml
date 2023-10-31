@@ -34,4 +34,7 @@
     <string name="click_to_rotate_camera">klik untuk memutar kamera</string>
 
     <string name="maps">Maps</string>
+    <string name="timeout">Timeout</string>
+    <string name="try_again">Coba Lagi</string>
+    <string name="share_my_location">Bagikan Lokasi Saya</string>
 </resources>

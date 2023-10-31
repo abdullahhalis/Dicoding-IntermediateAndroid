@@ -3,6 +3,7 @@ package com.dicoding.mystory.utils
 import android.content.Context
 import com.dicoding.mystory.data.AuthRepository
 import com.dicoding.mystory.data.StoryRepository
+import com.dicoding.mystory.data.database.StoryDatabase
 import com.dicoding.mystory.data.pref.UserPreferences
 import com.dicoding.mystory.data.pref.dataStore
 import com.dicoding.mystory.data.retrofit.ApiConfig
@@ -20,6 +21,7 @@ object Injection {
         val userPreferences = UserPreferences.getInstance(context.dataStore)
         val token = runBlocking { userPreferences.getSession().first().token }.toString()
         val apiService = ApiConfig.getApiService(token)
-        return StoryRepository.getInstance(apiService, userPreferences)
+        val database = StoryDatabase.getDatabase(context)
+        return StoryRepository.getInstance(apiService, userPreferences, database)
     }
 }

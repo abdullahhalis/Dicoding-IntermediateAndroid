@@ -48,6 +48,8 @@ interface ApiService {
     suspend fun uploadImage(
         @Part("description") description: RequestBody,
         @Part file: MultipartBody.Part,
+        @Part("lat") lat: Double?,
+        @Part("lon") lon: Double?
     ): ResponseMessage
 
     @GET("stories")

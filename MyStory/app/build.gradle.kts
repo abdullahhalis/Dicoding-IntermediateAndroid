@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id ("kotlin-kapt")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -63,6 +65,7 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     val cameraxVersion = "1.2.3"
     implementation("androidx.camera:camera-camera2:$cameraxVersion")
@@ -72,6 +75,10 @@ dependencies {
     implementation("androidx.exifinterface:exifinterface:1.3.6")
 
     implementation("androidx.paging:paging-runtime-ktx:3.1.0")
+    implementation("androidx.room:room-paging:2.6.0-rc01")
+
+    implementation ("androidx.room:room-ktx:2.6.0-rc01")
+    kapt ("androidx.room:room-compiler:2.6.0-rc01")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

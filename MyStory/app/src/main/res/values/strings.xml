@@ -33,4 +33,7 @@
     <string name="click_to_rotate_camera">Click to rotate camera</string>
 
     <string name="maps">Maps</string>
+    <string name="timeout">Timeout</string>
+    <string name="try_again">Try again</string>
+    <string name="share_my_location">Share My Location</string>
 </resources>

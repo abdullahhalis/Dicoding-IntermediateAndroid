@@ -2,11 +2,15 @@ package com.dicoding.mystory.ui.addStory
 
 import android.Manifest
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -23,16 +27,29 @@ import com.dicoding.mystory.utils.reduceFileImage
 import com.dicoding.mystory.utils.showLoading
 import com.dicoding.mystory.utils.showToast
 import com.dicoding.mystory.utils.uriToFile
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.util.concurrent.TimeUnit
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private val addStoryViewModel: AddStoryViewModel by viewModels { StoryViewModelFactory.getInstance(this) }
 
     private var currentImageUri: Uri? = null
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+
+
+    private var lat: Double? = null
+    private var lon: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +58,16 @@ class AddStoryActivity : AppCompatActivity() {
 
         title = getString(R.string.add_story)
 
-        if (!allPermissionsGranted()) {
-            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        checkCameraPermissionGranted()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        binding.checkLocation.setOnCheckedChangeListener{ _, isChecked ->
+            if(isChecked) {
+                createLocationRequest()
+            } else {
+                lat = null
+                lon = null
+            }
         }
 
         binding.apply {
@@ -52,7 +77,18 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    private val requestPermissionLauncher =
+    override fun onResume() {
+        super.onResume()
+        checkCameraPermissionGranted()
+    }
+
+    private fun checkCameraPermissionGranted() {
+        if (!allPermissionsGranted()) {
+            requestCameraPermissionLauncher.launch(CAMERA_PERMISSION)
+        }
+    }
+
+    private val requestCameraPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -66,7 +102,7 @@ class AddStoryActivity : AppCompatActivity() {
     private fun allPermissionsGranted() =
         ContextCompat.checkSelfPermission(
             this,
-            REQUIRED_PERMISSION,
+            CAMERA_PERMISSION,
         ) == PackageManager.PERMISSION_GRANTED
 
     private fun startGallery() {
@@ -117,7 +153,8 @@ class AddStoryActivity : AppCompatActivity() {
                 imageFile.name,
                 requestImageFile
             )
-            addStoryViewModel.uploadFile(description, multipartBody)
+            addStoryViewModel.uploadFile(description, multipartBody, lat, lon)
+            Log.i("addStory", "lat: $lat, lon: $lon")
             addStoryViewModel.isLoading.observe(this){
                 binding.progressBar.showLoading(it)
             }
@@ -137,8 +174,95 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+                else -> {
+                    showToast(this, "please give permission to share location")
+                }
+            }
+        }
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getMyLastLocation() {
+        if(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ){
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    lat = location.latitude
+                    lon = location.longitude
+                } else {
+                    binding.checkLocation.isChecked = false
+                    showToast(this, "Location is not Found. Try again")
+                }
+
+            }
+        } else {
+            binding.checkLocation.isChecked = false
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+    private val resolutionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        when(result.resultCode) {
+            RESULT_OK ->
+                showToast(this, "All location settings are satisfied")
+            RESULT_CANCELED ->
+                showToast(this, "Anda harus mengaktifkan GPS untuk menggunakan aplikasi ini")
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest.create().apply {
+            interval = TimeUnit.SECONDS.toMillis(1)
+            maxWaitTime = TimeUnit.SECONDS.toMillis(1)
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        val client = LocationServices.getSettingsClient(this)
+        client.checkLocationSettings(builder.build())
+            .addOnSuccessListener {
+                getMyLastLocation()
+            }
+            .addOnFailureListener { exception ->
+                if (exception is ResolvableApiException) {
+                    try {
+                        resolutionLauncher.launch(
+                            IntentSenderRequest.Builder(exception.resolution).build()
+                        )
+                    }catch (sendEx: IntentSender.SendIntentException) {
+                        Toast.makeText(this, sendEx.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+    }
+
     companion object {
-        private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
+        private const val CAMERA_PERMISSION = Manifest.permission.CAMERA
         const val MAXIMAL_SIZE = 1 * 1024 * 1024
     }
 }

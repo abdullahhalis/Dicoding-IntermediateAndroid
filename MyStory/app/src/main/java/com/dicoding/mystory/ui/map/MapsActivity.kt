@@ -77,9 +77,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setMapStyle() {
         try {
-            val succsess =
+            val success =
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
-            if (!succsess) {
+            if (!success) {
                 Log.e(TAG, "Style parsing failed")
             }
         }catch (exception: Resources.NotFoundException){

@@ -50,6 +50,17 @@
             app:layout_constraintStart_toEndOf="@id/btn_gallery"
             app:layout_constraintTop_toTopOf="@id/btn_gallery" />
 
+        <CheckBox
+            android:id="@+id/checkLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/share_my_location"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_gallery" />
+
         <EditText
             android:id="@+id/edt_description"
             android:layout_width="0dp"
@@ -63,7 +74,7 @@
             app:layout_constraintBottom_toTopOf="@id/guideline5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_gallery" />
+            app:layout_constraintTop_toBottomOf="@id/checkLocation" />
 
         <Button
             android:id="@+id/btn_upload"
@@ -71,13 +82,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="64dp"
             android:backgroundTint="?attr/colorPrimary"
             android:contentDescription="@string/upload"
             android:text="@string/upload"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edt_description"
             app:layout_constraintVertical_bias="0.0" />

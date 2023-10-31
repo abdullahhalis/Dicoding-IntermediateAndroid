@@ -15,9 +15,9 @@ class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewMode
     val responseMessage: LiveData<Event<String>> = storyRepository.responseMessage
     val isLoading : LiveData<Boolean> = storyRepository.isLoading
 
-    fun uploadFile(description: RequestBody, file: MultipartBody.Part) {
+    fun uploadFile(description: RequestBody, file: MultipartBody.Part, lat: Double? = null, lon: Double? = null) {
         viewModelScope.launch {
-            storyRepository.uploadFile(description, file)
+            storyRepository.uploadFile(description, file, lat, lon)
         }
     }
 }

@@ -6,17 +6,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.mystory.data.response.ListStoryItem
+import com.dicoding.mystory.data.database.Story
 import com.dicoding.mystory.databinding.ItemStoryBinding
 import com.dicoding.mystory.ui.detail.DetailActivity
 import com.dicoding.mystory.utils.loadImage
 
-class ListAdapter(private val listStory: List<ListStoryItem>) :
-    RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
+class ListAdapter :
+    PagingDataAdapter<Story, ListAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     class MyViewHolder(private val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ListStoryItem) {
+        fun bind(item: Story) {
             binding.apply {
                 item.photoUrl?.let { imgItem.loadImage(it) }
                 tvTitle.text = item.name
@@ -42,9 +44,22 @@ class ListAdapter(private val listStory: List<ListStoryItem>) :
         return MyViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = listStory.size
-
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(listStory[position])
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
+    }
+
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
+            override fun areItemsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
     }
 }

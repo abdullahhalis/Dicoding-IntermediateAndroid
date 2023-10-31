@@ -4,14 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.dicoding.mystory.data.StoryRepository
+import com.dicoding.mystory.data.database.Story
 import com.dicoding.mystory.data.pref.UserModel
-import com.dicoding.mystory.data.response.ListStoryItem
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val storyRepository: StoryRepository) : ViewModel() {
-    val listStory : LiveData<List<ListStoryItem>> = storyRepository.listStory
-    val isLoading: LiveData<Boolean> = storyRepository.isLoading
+    val listStory : LiveData<PagingData<Story>> = storyRepository.getAllStories().cachedIn(viewModelScope)
 
     fun getSession() : LiveData<UserModel> {
         return storyRepository.getSession().asLiveData()
@@ -22,9 +23,8 @@ class MainViewModel(private val storyRepository: StoryRepository) : ViewModel() 
             storyRepository.logout()
         }
     }
-    fun getAllStories(){
-        viewModelScope.launch {
-            storyRepository.getAllStories()
-        }
+
+    fun clearRepository() {
+        StoryRepository.clearInstance()
     }
 }

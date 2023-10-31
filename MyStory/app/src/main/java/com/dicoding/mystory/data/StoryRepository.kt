@@ -3,6 +3,13 @@ package com.dicoding.mystory.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.dicoding.mystory.data.database.StoryDatabase
+import com.dicoding.mystory.data.paging.StoryRemoteMediator
 import com.dicoding.mystory.data.pref.UserModel
 import com.dicoding.mystory.data.pref.UserPreferences
 import com.dicoding.mystory.data.response.ListStoryItem
@@ -18,13 +25,11 @@ import retrofit2.HttpException
 
 class StoryRepository private constructor(
     private val apiService: ApiService,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val database: StoryDatabase
 ){
     private val _responseMessage = MutableLiveData<Event<String>>()
     val responseMessage : LiveData<Event<String>> = _responseMessage
-
-    private val _listStory = MutableLiveData<List<ListStoryItem>>()
-    val listStory : LiveData<List<ListStoryItem>> = _listStory
 
     private val _listStoryWithLocation = MutableLiveData<List<ListStoryItem>>()
     val listStoryWithLocation : LiveData<List<ListStoryItem>> = _listStoryWithLocation
@@ -46,16 +51,17 @@ class StoryRepository private constructor(
         userPreferences.logout()
     }
 
-    suspend fun getAllStories() {
-        _isLoading.value = true
-        try {
-            val response = apiService.getStories()
-            _listStory.value = response.listStory
-            _isLoading.value = false
-        } catch (e: HttpException){
-            Log.e("list story", "onFailure: ${e.message}")
-            _isLoading.value = false
-        }
+    @OptIn(ExperimentalPagingApi::class)
+    fun getAllStories(): LiveData<PagingData<com.dicoding.mystory.data.database.Story>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            remoteMediator = StoryRemoteMediator(database, apiService),
+            pagingSourceFactory = {
+                database.storyDao().getAllStory()
+            }
+        ).liveData
     }
 
     suspend fun getAllStoriesWithLocation() {
@@ -82,10 +88,10 @@ class StoryRepository private constructor(
         }
     }
 
-    suspend fun uploadFile(description: RequestBody, file: MultipartBody.Part){
+    suspend fun uploadFile(description: RequestBody, file: MultipartBody.Part, lat: Double?, lon: Double?){
         _isLoading.value = true
         try {
-            val successResponse = apiService.uploadImage(description, file)
+            val successResponse = apiService.uploadImage(description, file, lat, lon)
             _uploadResponse.value = successResponse
             _responseMessage.value = Event(successResponse.message)
             _isLoading.value = false
@@ -104,10 +110,15 @@ class StoryRepository private constructor(
 
         fun getInstance(
             apiService: ApiService,
-            userPreferences: UserPreferences
+            userPreferences: UserPreferences,
+            database: StoryDatabase
         ):StoryRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: StoryRepository(apiService, userPreferences)
+                INSTANCE ?: StoryRepository(apiService, userPreferences, database)
             }.also { INSTANCE = it }
+
+        fun clearInstance(){
+            INSTANCE = null
+        }
     }
 }
