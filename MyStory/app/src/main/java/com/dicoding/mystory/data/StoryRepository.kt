@@ -17,6 +17,7 @@ import com.dicoding.mystory.data.response.ResponseMessage
 import com.dicoding.mystory.data.response.Story
 import com.dicoding.mystory.data.retrofit.ApiService
 import com.dicoding.mystory.utils.Event
+import com.dicoding.mystory.utils.wrapEspressoIdlingResource
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -53,15 +54,17 @@ class StoryRepository private constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     fun getAllStories(): LiveData<PagingData<com.dicoding.mystory.data.database.Story>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 5
-            ),
-            remoteMediator = StoryRemoteMediator(database, apiService),
-            pagingSourceFactory = {
-                database.storyDao().getAllStory()
-            }
-        ).liveData
+        wrapEspressoIdlingResource {
+            return Pager(
+                config = PagingConfig(
+                    pageSize = 10
+                ),
+                remoteMediator = StoryRemoteMediator(database, apiService),
+                pagingSourceFactory = {
+                    database.storyDao().getAllStory()
+                }
+            ).liveData
+        }
     }
 
     suspend fun getAllStoriesWithLocation() {
@@ -116,9 +119,5 @@ class StoryRepository private constructor(
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: StoryRepository(apiService, userPreferences, database)
             }.also { INSTANCE = it }
-
-        fun clearInstance(){
-            INSTANCE = null
-        }
     }
 }

@@ -10,6 +10,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mystory.R
+import com.dicoding.mystory.data.retrofit.ApiConfig
 import com.dicoding.mystory.databinding.ActivityMainBinding
 import com.dicoding.mystory.ui.addStory.AddStoryActivity
 import com.dicoding.mystory.ui.map.MapsActivity
@@ -34,13 +35,12 @@ class MainActivity : AppCompatActivity() {
             if(!user.isLogin){
                 val intent = Intent(this, WelcomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                mainViewModel.clearRepository()
                 startActivity(intent)
             }
             showToast(this, String.format(getString(R.string.welcome),user.name))
             if(user.token.isNotEmpty()){
                 Log.d("token main activity", "token: ${user.token}")
-
+                ApiConfig.token = user.token
             }
         }
 

@@ -8,6 +8,7 @@ import com.dicoding.mystory.data.response.LoginResponse
 import com.dicoding.mystory.data.response.ResponseMessage
 import com.dicoding.mystory.data.retrofit.ApiService
 import com.dicoding.mystory.utils.Event
+import com.dicoding.mystory.utils.wrapEspressoIdlingResource
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
@@ -44,16 +45,18 @@ class AuthRepository(
 
     suspend fun userLogin(email: String, password: String) {
         _isLoading.value = true
-        try {
-            val response = apiService.login(email, password)
-            _loginResponse.value = Event(response)
-            _responseMessage.value = Event(response.message)
-            _isLoading.value = false
-        } catch (e: HttpException) {
-            val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, ResponseMessage::class.java)
-            _responseMessage.value = Event(errorResponse.message)
-            _isLoading.value = false
+        wrapEspressoIdlingResource {
+            try {
+                val response = apiService.login(email, password)
+                _loginResponse.value = Event(response)
+                _responseMessage.value = Event(response.message)
+                _isLoading.value = false
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val errorResponse = Gson().fromJson(errorBody, ResponseMessage::class.java)
+                _responseMessage.value = Event(errorResponse.message)
+                _isLoading.value = false
+            }
         }
     }
 
