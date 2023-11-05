@@ -27,7 +27,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun getData() {
         val adapter = QuoteListAdapter()
-        binding.rvQuote.adapter = adapter.withLoadStateFooter(
+        binding.rvQuote.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = LoadingStateAdapter{
+                adapter.retry()
+            },
             footer = LoadingStateAdapter{
                 adapter.retry()
             }
