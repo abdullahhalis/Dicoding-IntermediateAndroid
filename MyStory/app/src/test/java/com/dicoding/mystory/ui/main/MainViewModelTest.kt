@@ -82,7 +82,7 @@ class MainViewModelTest {
 
 class StoryPagingSource : PagingSource<Int, LiveData<List<Story>>>() {
     override fun getRefreshKey(state: PagingState<Int, LiveData<List<Story>>>): Int {
-        return 2
+        return 0
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LiveData<List<Story>>> {

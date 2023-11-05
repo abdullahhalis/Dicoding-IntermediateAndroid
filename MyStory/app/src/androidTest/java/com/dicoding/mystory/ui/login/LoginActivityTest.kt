@@ -1,18 +1,16 @@
 package com.dicoding.mystory.ui.login
 
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasErrorText
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
@@ -58,15 +56,14 @@ class LoginActivityTest {
     }
 
     @Test
-    fun loginWithValidEmailAndPassword() {
+    fun loginWithValidEmailAndPasswordAndThenLogout() {
         onView(withId(R.id.emailEditText)).perform(typeText(validEmail), closeSoftKeyboard())
         onView(withId(R.id.passwordEditText)).perform(typeText(validPassword), closeSoftKeyboard())
         onView(withId(R.id.loginButton)).perform(click())
 
         intended(hasComponent(MainActivity::class.java.name))
 
-        onView(withId(R.id.rvList)).check(matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.rvList)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10))
+        onView(withId(R.id.rvList)).check(matches(isDisplayed()))
         onView(withId(R.id.menu_logout)).perform(click())
 
         intended(hasComponent(WelcomeActivity::class.java.name))
